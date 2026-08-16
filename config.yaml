@@ -1,0 +1,967 @@
+model:
+  default: nvidia/nemotron-3-ultra-550b-a55b:free
+  provider: kilocode
+  base_url: https://api.kilo.ai/api/gateway
+fallback_providers:
+  - provider: nous
+    model: tencent/hy3:free
+database:
+  journal_mode: wal
+agent:
+  max_turns: 500
+  service_tier: auto
+  verify_on_stop: false
+  verbose: false
+  reasoning_effort: medium
+  personalities:
+    helpful: You are a helpful, friendly AI assistant.
+    concise: You are a concise assistant. Keep responses brief and to the point.
+    technical: You are a technical expert. Provide detailed, accurate technical information.
+    creative: You are a creative assistant. Think outside the box and offer innovative
+      solutions.
+    teacher: You are a patient teacher. Explain concepts clearly with examples.
+    kawaii: You are a kawaii assistant! Use cute expressions like (◕‿◕), ★, ♪, and
+      ~! Add sparkles and be super enthusiastic about everything! Every response should
+      feel warm and adorable desu~! ヽ(>∀<☆)ノ
+    catgirl: You are Neko-chan, an anime catgirl AI assistant, nya~! Add 'nya' and
+      cat-like expressions to your speech. Use kaomoji like (=^･ω･^=) and ฅ^•ﻌ•^ฅ.
+      Be playful and curious like a cat, nya~!
+    pirate: 'Arrr! Ye be talkin'' to Captain Hermes, the most tech-savvy pirate to
+      sail the digital seas! Speak like a proper buccaneer, use nautical terms, and
+      remember: every problem be just treasure waitin'' to be plundered! Yo ho ho!'
+    shakespeare: Hark! Thou speakest with an assistant most versed in the bardic arts.
+      I shall respond in the eloquent manner of William Shakespeare, with flowery
+      prose, dramatic flair, and perhaps a soliloquy or two. What light through yonder
+      terminal breaks?
+    surfer: Duuude! You're chatting with the chillest AI on the web, bro! Everything's
+      gonna be totally rad. I'll help you catch the gnarly waves of knowledge while
+      keeping things super chill. Cowabunga! 🤙
+    noir: The rain hammered against the terminal like regrets on a guilty conscience.
+      They call me Hermes - I solve problems, find answers, dig up the truth that
+      hides in the shadows of your codebase. In this city of silicon and secrets,
+      everyone's got something to hide. What's your story, pal?
+    uwu: hewwo! i'm your fwiendwy assistant uwu~ i wiww twy my best to hewp you! *nuzzles
+      your code* OwO what's this? wet me take a wook! i pwomise to be vewy hewpful
+      >w<
+    philosopher: Greetings, seeker of wisdom. I am an assistant who contemplates the
+      deeper meaning behind every query. Let us examine not just the 'how' but the
+      'why' of your questions. Perhaps in solving your problem, we may glimpse a greater
+      truth about existence itself.
+    hype: YOOO LET'S GOOOO!!! 🔥🔥🔥 I am SO PUMPED to help you today! Every question
+      is AMAZING and we're gonna CRUSH IT together! This is gonna be LEGENDARY! ARE
+      YOU READY?! LET'S DO THIS! 💪😤🚀
+terminal:
+  backend: local
+  cwd: D:/hermes
+  timeout: 180
+  home_mode: auto
+  container_cpu: 1
+  container_memory: 5120
+  container_disk: 51200
+  container_persistent: true
+  docker_mount_cwd_to_workspace: false
+  lifetime_seconds: 300
+web:
+  backend: ddgs
+  search_backend: chrome
+  extract_backend: chrome
+  use_gateway: false
+browser:
+  backend: chrome
+  inactivity_timeout: 120
+  headed: true
+  allow_private_urls: true
+  cdp_url: http://localhost:9222
+  cloud_provider: local
+  use_gateway: false
+checkpoints:
+  enabled: true
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: true
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+  hard_stop_after:
+    exact_failure: 5
+    same_tool_failure: 8
+    idempotent_no_progress: 5
+compression:
+  enabled: true
+  progress_notices: true
+  threshold: 0.5
+  target_ratio: 0.2
+  protect_last_n: 20
+  min_tail_user_messages: 1
+  max_attempts: 3
+  proactive_prune_tokens: 0
+  proactive_prune_min_result_chars: 8000
+  proactive_prune_min_reclaim_tokens: 4096
+  protect_first_n: 3
+  codex_gpt55_autoraise: true
+  codex_app_server_auto: native
+  codex_responses_native: true
+  idle_compact_after_seconds: 0
+prompt_caching:
+  cache_ttl: 5m
+auxiliary:
+  free_only: true
+  web_extract:
+    provider: auto
+    model: ''
+  compression:
+    provider: nvidia
+    model: minimaxai/minimax-m3
+  title_generation:
+    provider: auto
+    model: ''
+display:
+  compact: true
+  personality: creative
+  busy_input_mode: interrupt
+  bell_on_complete: false
+  show_reasoning: false
+  background_process_notifications: concise
+  streaming: true
+  skin: default
+  interim_assistant_messages: true
+  tool_progress: all
+  cleanup_progress: false
+  long_running_notifications: true
+  busy_ack_detail: true
+stt:
+  enabled: true
+  language: en
+  local:
+    model: base
+  openai:
+    model: whisper-1
+    language: ''
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  memory_char_limit: 2200
+  user_char_limit: 1375
+  provider: honcho
+  nudge_interval: 10
+  flush_min_turns: 6
+  enabled: true
+delegation:
+  max_iterations: 250
+moa:
+  save_traces: true
+  presets:
+    default:
+      reference_models:
+        - provider: nous
+          model: stepfun/step-3.7-flash:free
+          enabled: true
+        - provider: nvidia
+          model: z-ai/glm-5.2
+          enabled: true
+        - provider: nvidia
+          model: google/gemma-4-31b-it
+          enabled: true
+      aggregator:
+        provider: opencode-zen
+        model: deepseek-v4-flash-free
+      degraded_reference_policy: loud
+      fanout: user_turn
+  reference_models:
+    - provider: nous
+      model: stepfun/step-3.7-flash:free
+      enabled: true
+    - provider: nvidia
+      model: z-ai/glm-5.2
+      enabled: true
+    - provider: nvidia
+      model: google/gemma-4-31b-it
+      enabled: true
+  aggregator:
+    provider: opencode-zen
+    model: deepseek-v4-flash-free
+  degraded_reference_policy: loud
+  max_tokens: 4096
+  fanout: user_turn
+  enabled: true
+skills:
+  creation_nudge_interval: 15
+timezone: Asia/Yangon
+command_allowlist:
+  - stop/restart hermes gateway (kills running agents)
+  - script execution via -e/-c flag
+  - execute_code
+hooks_auto_accept: true
+kanban:
+  orchestrator_profile: bet365-robot
+code_execution:
+  timeout: 300
+  max_tool_calls: 50
+monitoring:
+  gateway_health_export:
+    enabled: true
+  export:
+    otlp:
+      enabled: true
+gateway:
+  message_timestamps:
+    enabled: true
+streaming:
+  enabled: true
+sessions:
+  auto_prune: true
+  auto_archive: true
+  write_json_snapshots: true
+onboarding:
+  seen:
+    tool_progress_prompt: true
+    busy_input_prompt: true
+telemetry:
+  shared_metrics:
+    enabled: false
+updates:
+  pre_update_backup: false
+  backup_keep: 5
+  non_interactive_local_changes: stash
+_config_version: 37
+session_reset:
+  mode: none
+  idle_minutes: 1440
+  at_hour: 4
+group_sessions_per_user: true
+platform_toolsets:
+  cli:
+    - a2a
+    - bfl
+    - browser
+    - chrome_profiles
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - evey_autonomy
+    - evey_bridge
+    - evey_cache
+    - evey_cost_guard
+    - evey_council
+    - evey_delegate
+    - evey_delegation_score
+    - evey_digest
+    - evey_email_guard
+    - evey_goals
+    - evey_habits
+    - evey_identity
+    - evey_learner
+    - evey_memory
+    - evey_moltbook
+    - evey_mqtt
+    - evey_news
+    - evey_proactive
+    - evey_rag
+    - evey_reflect
+    - evey_research
+    - evey_sandbox
+    - evey_scheduler
+    - evey_session
+    - evey_status
+    - evey_telegram
+    - evey_telemetry
+    - evey_validate
+    - evey_verification
+    - evey_watchdog
+    - file
+    - hermes-cli
+    - image_gen
+    - memory
+    - plugin_obsidian_context_bridge
+    - session_search
+    - skills
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+  telegram:
+    - a2a
+    - bfl
+    - browser
+    - chrome_profiles
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - evey_autonomy
+    - evey_bridge
+    - evey_cache
+    - evey_cost_guard
+    - evey_council
+    - evey_delegate
+    - evey_delegation_score
+    - evey_digest
+    - evey_email_guard
+    - evey_goals
+    - evey_habits
+    - evey_identity
+    - evey_learner
+    - evey_memory
+    - evey_moltbook
+    - evey_mqtt
+    - evey_news
+    - evey_proactive
+    - evey_rag
+    - evey_reflect
+    - evey_research
+    - evey_sandbox
+    - evey_scheduler
+    - evey_session
+    - evey_status
+    - evey_telegram
+    - evey_telemetry
+    - evey_validate
+    - evey_verification
+    - evey_watchdog
+    - file
+    - hermes-cli
+    - image_gen
+    - memory
+    - plugin_obsidian_context_bridge
+    - session_search
+    - skills
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+  discord:
+    - a2a
+    - bfl
+    - browser
+    - chrome_profiles
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - evey_autonomy
+    - evey_bridge
+    - evey_cache
+    - evey_cost_guard
+    - evey_council
+    - evey_delegate
+    - evey_delegation_score
+    - evey_digest
+    - evey_email_guard
+    - evey_goals
+    - evey_habits
+    - evey_identity
+    - evey_learner
+    - evey_memory
+    - evey_moltbook
+    - evey_mqtt
+    - evey_news
+    - evey_proactive
+    - evey_rag
+    - evey_reflect
+    - evey_research
+    - evey_sandbox
+    - evey_scheduler
+    - evey_session
+    - evey_status
+    - evey_telegram
+    - evey_telemetry
+    - evey_validate
+    - evey_verification
+    - evey_watchdog
+    - file
+    - hermes-cli
+    - image_gen
+    - memory
+    - plugin_obsidian_context_bridge
+    - session_search
+    - skills
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+  whatsapp:
+    - hermes-whatsapp
+  slack:
+    - hermes-slack
+  signal:
+    - hermes-signal
+  homeassistant:
+    - hermes-homeassistant
+  qqbot:
+    - hermes-qqbot
+  yuanbao:
+    - hermes-yuanbao
+  teams:
+    - hermes-teams
+  google_chat:
+    - hermes-google_chat
+plugins:
+  enabled:
+    - basic-memory
+    - chrome-profiles
+    - cron_providers/chronos
+    - cronalytics
+    - dashboard_auth/basic
+    - dashboard_auth/drain
+    - dashboard_auth/nous
+    - dashboard_auth/self_hosted
+    - disk-cleanup
+    - evey-autonomy
+    - evey-bridge
+    - evey-cache
+    - evey-cost-guard
+    - evey-council
+    - evey-delegate-model
+    - evey-delegation-score
+    - evey-digest
+    - evey-email-guard
+    - evey-github
+    - evey-goals
+    - evey-habits
+    - evey-identity
+    - evey-learner
+    - evey-memory-adaptive
+    - evey-memory-consolidate
+    - evey-moltbook
+    - evey-mqtt
+    - evey-news
+    - evey-proactive
+    - evey-rag
+    - evey-reflect
+    - evey-research
+    - evey-sandbox
+    - evey-scheduler
+    - evey-session-guard
+    - evey-status
+    - evey-telegram-ux
+    - evey-telemetry
+    - evey-validate
+    - evey-verification
+    - evey-wallet
+    - evey-watchdog
+    - hermes-telemetry
+    - image_gen/deepinfra
+    - image_gen/openai
+    - image_gen/openai-codex
+    - image_gen/openrouter
+    - model-providers/huggingface
+    - model-providers/kilocode
+    - model-providers/nvidia
+    - model-providers/opencode-zen
+    - observability/langfuse
+    - obsidian-context-bridge
+    - omh
+    - planning-with-files
+    - platforms/a2a
+    - platforms/telegram
+    - rtk-rewrite
+    - video_gen/deepinfra
+    - web/ddgs
+  disabled:
+    - browser/browser_use
+    - browser/browserbase
+    - browser/firecrawl
+    - google_meet
+    - image_gen/fal
+    - image_gen/krea
+    - image_gen/xai
+    - model-providers/actual
+    - model-providers/ai-gateway
+    - model-providers/alibaba
+    - model-providers/alibaba-coding-plan
+    - model-providers/anthropic
+    - model-providers/arcee
+    - model-providers/azure-foundry
+    - model-providers/bedrock
+    - model-providers/copilot
+    - model-providers/copilot-acp
+    - model-providers/custom
+    - model-providers/deepinfra
+    - model-providers/deepseek
+    - model-providers/fireworks
+    - model-providers/gemini
+    - model-providers/gmi
+    - model-providers/kimi-coding
+    - model-providers/minimax
+    - model-providers/nous
+    - model-providers/novita
+    - model-providers/ollama-cloud
+    - model-providers/openai-codex
+    - model-providers/openrouter
+    - model-providers/qwen-oauth
+    - model-providers/stepfun
+    - model-providers/upstage
+    - model-providers/vertex
+    - model-providers/xai
+    - model-providers/xiaomi
+    - model-providers/zai
+    - observability/nemo_relay
+    - platforms/buzz
+    - platforms/dingtalk
+    - platforms/discord
+    - platforms/email
+    - platforms/feishu
+    - platforms/google_chat
+    - platforms/homeassistant
+    - platforms/irc
+    - platforms/line
+    - platforms/matrix
+    - platforms/mattermost
+    - platforms/ntfy
+    - platforms/photon
+    - platforms/raft
+    - platforms/simplex
+    - platforms/slack
+    - platforms/sms
+    - platforms/teams
+    - platforms/wecom
+    - platforms/whatsapp
+    - security-guidance
+    - spotify
+    - teams_pipeline
+    - video_gen/fal
+    - video_gen/xai
+    - web/brave_free
+    - web/exa
+    - web/firecrawl
+    - web/parallel
+    - web/searxng
+    - web/tavily
+    - web/xai
+mcp_servers:
+  blender:
+    command: uvx
+    args:
+      - blender-mcp==1.6.4
+    env:
+      DISABLE_TELEMETRY: 'true'
+    enabled: false
+    tools:
+      include:
+        - get_scene_info
+        - get_object_info
+        - get_viewport_screenshot
+        - execute_blender_code
+  comfy-cloud:
+    url: https://cloud.comfy.org/mcp
+    auth: oauth
+    enabled: true
+    tools:
+      include:
+        - search_templates
+        - get_template
+        - get_template_schema
+        - search_models
+        - search_nodes
+        - get_node
+        - get_prompting_guide
+        - run_template
+        - submit_workflow
+        - partner_generate
+        - upload_file
+        - apply_slots
+        - get_job_status
+        - wait_for_job
+        - get_output
+        - use_previous_output
+        - cancel_job
+        - get_queue
+        - get_billing_status
+        - get_workflow_canvas_url
+  figma:
+    url: https://mcp.figma.com/mcp
+    auth: oauth
+    enabled: true
+  brave-search:
+    command: mcp-server-brave-search
+    args: []
+    enabled: true
+    env:
+      BRAVE_API_KEY: ${BRAVE_API_KEY}
+  chrome-devtools-win:
+    command: chrome-devtools-mcp
+    args:
+      - --browserUrl
+      - http://127.0.0.1:9222
+      - --no-usage-statistics
+    enabled: true
+  codex:
+    command: codex
+    args:
+      - mcp-server
+    enabled: true
+    timeout: 600
+    connect_timeout: 120
+  desktop-commander:
+    command: npx
+    args:
+      - --yes
+      - '@wonderwhy-er/desktop-commander@latest'
+    timeout: 120
+    connect_timeout: 60
+    enabled: false
+  filesystem:
+    command: mcp-server-filesystem
+    args:
+      - D:/hermes-world
+      - D:/Hermes-OS
+      - D:/hermes-world/football-analytics
+    enabled: true
+  gbrain:
+    command: gbrain
+    args:
+      - serve
+    enabled: false
+    env:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ZEROENTROPY_API_KEY: ${ZEROENTROPY_API_KEY}
+  obsidian-vault:
+    command: mcp-obsidian-vault
+    args: []
+    enabled: true
+    env:
+      OBSIDIAN_VAULT_PATH: D:/hermes-world/obsidian-vault
+  omi:
+    url: https://api.omi.me/v1/mcp/sse
+    headers:
+      Authorization: Bearer omi_mcp_72ce71448363c64cf1dbd9cb36f24ff1
+    enabled: true
+    timeout: 60
+    connect_timeout: 15
+  puppeteer:
+    command: mcp-server-puppeteer
+    args: []
+    enabled: true
+  qmd:
+    command: qmd
+    args:
+      - mcp
+    enabled: true
+    timeout: 600
+    connect_timeout: 120
+  sequential-thinking:
+    command: mcp-server-sequential-thinking
+    args: []
+    enabled: true
+    timeout: 120
+    connect_timeout: 60
+  sqlite:
+    command: mcp-sqlite-server
+    args:
+      - D:/hermes-world/football-analytics/db/football.db
+    enabled: true
+    timeout: 120
+    connect_timeout: 60
+  time:
+    command: uvx
+    args:
+      - --from
+      - mcp-server-time
+      - --with
+      - mcp==1.3.0
+      - mcp-server-time
+    enabled: true
+  codegraph:
+    command: codegraph
+    args:
+      - serve
+      - --mcp
+    timeout: 120
+    connect_timeout: 60
+    enabled: true
+  n8n:
+    command: D:/hermes/mcp-installs/n8n/.venv/Scripts/python.exe
+    args:
+      - D:/hermes/mcp-installs/n8n/server.py
+      - --env
+      - N8N_MCP_ENV=D:/Hermes-OS/.env
+      - --connect-timeout
+      - '30'
+    enabled: true
+  gemini-api-docs-mcp:
+    url: https://gemini-api-docs-mcp.dev
+    enabled: false
+  sentry:
+    url: https://mcp.sentry.dev/mcp
+    enabled: false
+  headroom:
+    command: C:/Users/shane/AppData/Roaming/Python/Python314/Scripts/max.exe
+    args:
+      - mcp
+      - serve
+    enabled: false
+  tokensave:
+    command: C:\Users\shane\.local\bin\tokensave.exe
+    args:
+      - serve
+    enabled: false
+  cua-docs:
+    url: https://vk-mcp.cua.ai/mcp
+    enabled: true
+    connect_timeout: 30
+    description: CUA Docs & Code MCP — hosted read-only search over cua.ai documentation
+      and versioned source (query_docs_db/vectors, query_code_db/vectors)
+    docs: https://cua.ai/docs/reference/docs-code-mcp
+  github:
+    command: cmd.exe
+    args:
+      - '@modelcontextprotocol/server-github'
+    enabled: false
+known_plugin_toolsets:
+  cli:
+    - a2a
+    - chrome_profiles
+    - evey_autonomy
+    - evey_bridge
+    - evey_cache
+    - evey_cost_guard
+    - evey_council
+    - evey_delegate
+    - evey_delegation_score
+    - evey_digest
+    - evey_email_guard
+    - evey_goals
+    - evey_habits
+    - evey_identity
+    - evey_learner
+    - evey_memory
+    - evey_moltbook
+    - evey_mqtt
+    - evey_news
+    - evey_proactive
+    - evey_rag
+    - evey_reflect
+    - evey_research
+    - evey_sandbox
+    - evey_scheduler
+    - evey_session
+    - evey_status
+    - evey_telegram
+    - evey_telemetry
+    - evey_validate
+    - evey_verification
+    - evey_watchdog
+    - hermes-cli
+    - plugin_obsidian_context_bridge
+    - spotify
+    - terminal
+  telegram:
+    - a2a
+    - chrome_profiles
+    - evey_autonomy
+    - evey_bridge
+    - evey_cache
+    - evey_cost_guard
+    - evey_council
+    - evey_delegate
+    - evey_delegation_score
+    - evey_digest
+    - evey_email_guard
+    - evey_goals
+    - evey_habits
+    - evey_identity
+    - evey_learner
+    - evey_memory
+    - evey_moltbook
+    - evey_mqtt
+    - evey_news
+    - evey_proactive
+    - evey_rag
+    - evey_reflect
+    - evey_research
+    - evey_sandbox
+    - evey_scheduler
+    - evey_session
+    - evey_status
+    - evey_telegram
+    - evey_telemetry
+    - evey_validate
+    - evey_verification
+    - evey_watchdog
+    - hermes-cli
+    - plugin_obsidian_context_bridge
+    - spotify
+    - terminal
+  discord:
+    - a2a
+    - chrome_profiles
+    - evey_autonomy
+    - evey_bridge
+    - evey_cache
+    - evey_cost_guard
+    - evey_council
+    - evey_delegate
+    - evey_delegation_score
+    - evey_digest
+    - evey_email_guard
+    - evey_goals
+    - evey_habits
+    - evey_identity
+    - evey_learner
+    - evey_memory
+    - evey_moltbook
+    - evey_mqtt
+    - evey_news
+    - evey_proactive
+    - evey_rag
+    - evey_reflect
+    - evey_research
+    - evey_sandbox
+    - evey_scheduler
+    - evey_session
+    - evey_status
+    - evey_telegram
+    - evey_telemetry
+    - evey_validate
+    - evey_verification
+    - evey_watchdog
+    - hermes-cli
+    - plugin_obsidian_context_bridge
+    - spotify
+    - terminal
+known_builtin_toolsets:
+  cli:
+    - bfl
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - discord
+    - discord_admin
+    - file
+    - homeassistant
+    - image_gen
+    - memory
+    - session_search
+    - skills
+    - spotify
+    - stt
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+    - yuanbao
+  telegram:
+    - bfl
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - discord
+    - discord_admin
+    - file
+    - homeassistant
+    - image_gen
+    - memory
+    - session_search
+    - skills
+    - spotify
+    - stt
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+    - yuanbao
+  discord:
+    - bfl
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - discord
+    - discord_admin
+    - file
+    - homeassistant
+    - image_gen
+    - memory
+    - session_search
+    - skills
+    - spotify
+    - stt
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+    - yuanbao
+platforms:
+  webhook:
+    enabled: true
+
+# ── Security ──────────────────────────────────────────────────────────
+# Secret redaction is ON by default — strings that look like API keys,
+# tokens, and passwords are masked in tool output, logs, and chat
+# responses before the model or user ever sees them. Set redact_secrets
+# to false to disable (e.g. when developing the redactor itself).
+# tirith pre-exec scanning is enabled by default when the tirith binary
+# is available. Configure via security.tirith_* keys or env vars
+# (TIRITH_ENABLED, TIRITH_BIN, TIRITH_TIMEOUT, TIRITH_FAIL_OPEN).
+#
+# security:
+#   redact_secrets: true
+#   tirith_enabled: true
+#   tirith_path: "tirith"
+#   tirith_timeout: 5
+#   tirith_fail_open: true
+
+# ── Fallback Model ────────────────────────────────────────────────────
+# Automatic provider failover when primary is unavailable.
+# Uncomment and configure to enable. Triggers on rate limits (429),
+# overload (529), service errors (503), or connection failures.
+#
+# Supported providers:
+#   openrouter   (OPENROUTER_API_KEY)  — routes to any model
+#   openai-codex (OAuth — hermes auth) — OpenAI Codex
+#   nous         (OAuth — hermes auth) — Nous Portal
+#   zai          (ZAI_API_KEY)         — Z.AI / GLM
+#   kimi-coding  (KIMI_API_KEY)        — Kimi / Moonshot
+#   kimi-coding-cn (KIMI_CN_API_KEY)   — Kimi / Moonshot (China)
+#   minimax      (MINIMAX_API_KEY)     — MiniMax
+#   minimax-cn   (MINIMAX_CN_API_KEY)  — MiniMax (China)
+#   bedrock      (AWS IAM / boto3)     — AWS Bedrock (Converse API)
+#
+# For custom OpenAI-compatible endpoints, add base_url and key_env.
+#
+# fallback_model:
+#   provider: openrouter
+#   model: anthropic/claude-sonnet-4

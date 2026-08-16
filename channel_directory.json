@@ -1,0 +1,51 @@
+{
+  "updated_at": "2026-08-16T06:34:15.555283",
+  "platforms": {
+    "discord": [
+      {
+        "id": "1513136959676092457",
+        "name": "welcome-and-rules",
+        "guild": "demon's server",
+        "type": "channel"
+      },
+      {
+        "id": "1513136959676092458",
+        "name": "announcements",
+        "guild": "demon's server",
+        "type": "channel"
+      },
+      {
+        "id": "1513136959676092459",
+        "name": "resources",
+        "guild": "demon's server",
+        "type": "channel"
+      },
+      {
+        "id": "1513136959676092461",
+        "name": "general",
+        "guild": "demon's server",
+        "type": "channel"
+      },
+      {
+        "id": "1513136959676092462",
+        "name": "meeting-plans",
+        "guild": "demon's server",
+        "type": "channel"
+      },
+      {
+        "id": "1513136959676092463",
+        "name": "off-topic",
+        "guild": "demon's server",
+        "type": "channel"
+      }
+    ],
+    "telegram": [
+      {
+        "id": "1599386086",
+        "name": "Shane Htet",
+        "type": "dm",
+        "thread_id": null
+      }
+    ]
+  }
+}

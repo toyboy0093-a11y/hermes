@@ -1,0 +1,104 @@
+# === Secrets & Credentials ===
+.env
+.env.bak*
+auth.json
+auth.json.corrupt
+auth.lock
+google_client_secret.json
+google_token.json
+honcho.json
+
+# === Large Databases (do NOT track) ===
+state.db*
+memory_store.db*
+projects.db*
+kanban.db*
+response_store.db*
+verification_evidence.db*
+
+# === Runtime / Temp ===
+*.tmp
+*.log
+*.lock
+*.pyc
+__pycache__/
+.cache/
+cache/
+temp/
+tmp/
+tmp-ag/
+logs/
+sessions/
+checkpoints/
+state-snapshots/
+telemetry/
+disk-cleanup/
+pairing/
+pending_messages/
+pastes/
+sandboxes/
+shared/
+saved/
+
+# === Installed / Generated ===
+hermes-agent/       # separate git repo
+node/
+node_modules/
+.venv/
+bin/
+hermes-setup.exe
+install.ps1
+run-hidden.ps1
+run-hidden.ps1
+chrome-debug/
+desktop-userdata/
+desktop-plugins/
+lsp/
+mcp-installs/
+mcp-tokens/
+webui/
+hooks/
+platform/
+workflows/
+plugins/            # installed plugins, not config
+skills/             # installed skills, not config
+skill-bundles/
+
+# === Media Cache ===
+audio_cache/
+image_cache/
+images/
+
+# === SOUL evolution backups (many, auto-generated) ===
+SOUL.md.soul-evolution-*.bak
+SOUL.md.user-restored-raw.bak
+
+# === Config backups (many) ===
+config.yaml.bak*
+config.yaml.corrupt*
+config.yaml.stub*
+config.yaml.txt
+
+# === Other generated ===
+.skills_prompt_snapshot.json
+.processes_*
+.gateway_state_*
+.restart_last_processed.json
+.mcp-discovery.lock
+.npm_lock_hash_*
+.scratch_tip_shown
+.hermes_history
+.models_dev_cache.etag
+.ollama_cloud_models_cache.json
+.context_length_cache.yaml
+桌面版 Build stamps
+desktop-build-stamp.json
+web-ui-build-stamp.json
+provider_models_cache.json
+models_dev_cache.json
+docs_desktop.html
+pre-migration-2026-05-24-122836.zip
+tmp_inspect.ps1
+tmp_kill.ps1
+tmp_python.ps1
+pagefile_check.ps1
